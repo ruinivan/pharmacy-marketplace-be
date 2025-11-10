@@ -1,4 +1,4 @@
-package pharmacymarketplace.cruduser.model;
+package pharmacymarketplace.user.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

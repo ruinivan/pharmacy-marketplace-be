@@ -1,9 +1,9 @@
-package pharmacymarketplace.cruduser.service;
+package pharmacymarketplace.user.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pharmacymarketplace.cruduser.model.Users;
-import pharmacymarketplace.cruduser.repository.UserRepository;
+import pharmacymarketplace.user.model.Users;
+import pharmacymarketplace.user.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;

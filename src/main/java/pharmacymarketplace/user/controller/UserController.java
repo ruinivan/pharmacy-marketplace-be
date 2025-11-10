@@ -1,8 +1,8 @@
-package pharmacymarketplace.cruduser.controller;
+package pharmacymarketplace.user.controller;
 
 import org.springframework.web.bind.annotation.*;
-import pharmacymarketplace.cruduser.model.Users;
-import pharmacymarketplace.cruduser.service.UserService; // Importe o Service
+import pharmacymarketplace.user.model.Users;
+import pharmacymarketplace.user.service.UserService; // Importe o Service
 
 import org.springframework.beans.factory.annotation.Autowired;
 

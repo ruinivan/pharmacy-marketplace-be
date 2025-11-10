@@ -1,4 +1,4 @@
-package pharmacymarketplace.cruduser.config;
+package pharmacymarketplace.user.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
