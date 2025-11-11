@@ -1,11 +1,11 @@
-package pharmacymarketplace.service;
+package pharmacymarketplace.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pharmacymarketplace.model.Users;
 import pharmacymarketplace.repository.UserRepository;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service // Diz ao Spring que esta é uma classe de serviço
@@ -14,12 +14,18 @@ public class UserService {
     @Autowired
     private UserRepository repository;
 
-    public Users createUser(Users users) {
-        return repository.save(users);
+    public Users createUser(Users user) {
+        Optional<Users> userAlreadyCreated = repository.findByEmail(user.getEmail());
+
+        if (userAlreadyCreated.isPresent()) {
+            throw new RuntimeException("Usuário com email " + user.getEmail() + " já existe!");
+        }
+
+        return repository.save(user);
     }
 
-    public List<Users> listAllUsers() {
-        return repository.findAll();
+    public ArrayList<Users> listAllUsers() {
+        return (ArrayList<Users>) repository.findAll();
     }
 
     public Optional<Users> findUserById(long id) {
@@ -36,13 +42,14 @@ public class UserService {
                 });
     }
 
-    public boolean deleteUser(long id) {
-        return repository.findById(id)
-                .map(userFound -> {
-                    repository.delete(userFound);
-                    return true;
-                })
-                .orElse(false);
+    public Optional<Users> deleteUser(long id) {
+        Optional<Users> userToDelete = repository.findById(id);
+
+        if (userToDelete.isPresent()) {
+            repository.delete(userToDelete.get());
+        }
+
+        return userToDelete;
     }
 
 }

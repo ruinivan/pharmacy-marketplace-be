@@ -3,14 +3,10 @@ package pharmacymarketplace.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import pharmacymarketplace.model.Users;
 
-// Nós estendemos JpaRepository<TipoDaEntidade, TipoDoId>
+import java.util.Optional;
+
+
 public interface UserRepository extends JpaRepository<Users, Long> {
 
-    // É SÓ ISSO!
-    // O JpaRepository já nos dá:
-    // - save() (para Criar e Atualizar)
-    // - findAll() (para Ler todos)
-    // - findById() (para Ler um)
-    // - deleteById() (para Deletar)
-    // E muito mais!
+    Optional<Users> findByEmail(String email);
 }
