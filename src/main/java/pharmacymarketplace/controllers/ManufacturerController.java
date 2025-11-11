@@ -42,6 +42,6 @@ public class ManufacturerController {
     @PutMapping("/{id}")
     public ResponseEntity<Manufacturer> deleteManufacturerById(@PathVariable long id){
         service.deleteManufacturerById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

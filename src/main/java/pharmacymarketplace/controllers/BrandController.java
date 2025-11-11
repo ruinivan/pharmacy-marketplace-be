@@ -33,4 +33,15 @@ public class BrandController {
         return new ResponseEntity<>(service.findBrandById(id), HttpStatus.OK);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Brand> updateBrandById(@PathVariable long id, @RequestBody Brand brand) {
+        Brand brandUpdated = service.updateBrandById(id, brand);
+        return new ResponseEntity<>(brandUpdated, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Brand> deleteBrandById(@PathVariable long id) {
+        Brand brandDeleted = service.findBrandById(id);
+        return new ResponseEntity<>(brandDeleted, HttpStatus.OK);
+    }
 }
