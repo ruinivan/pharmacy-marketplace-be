@@ -42,4 +42,5 @@ public class Product {
     // Datas modernas
     private LocalDateTime createdAt;
     private LocalDateTime deletedAt;
+
 }

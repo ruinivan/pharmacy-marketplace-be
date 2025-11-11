@@ -1,25 +1,30 @@
+// Em: /services/UserService.java
 package pharmacymarketplace.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pharmacymarketplace.exceptions.AlreadyExistsException;
 import pharmacymarketplace.model.Users;
 import pharmacymarketplace.repository.UserRepository;
+import pharmacymarketplace.exceptions.ResourceNotFoundException; // Importe
 
 import java.util.ArrayList;
-import java.util.Optional;
+import java.util.Objects;
 
-@Service // Diz ao Spring que esta é uma classe de serviço
+@Service
 public class UserService {
 
-    @Autowired
-    private UserRepository repository;
+    private final UserRepository repository;
+
+    // Injeção por construtor (como falamos antes)
+    public UserService(UserRepository repository) {
+        this.repository = repository;
+    }
 
     public Users createUser(Users user) {
-        Optional<Users> userAlreadyCreated = repository.findByEmail(user.getEmail());
-
-        if (userAlreadyCreated.isPresent()) {
-            throw new RuntimeException("Usuário com email " + user.getEmail() + " já existe!");
-        }
+        // A lógica de "já existe" continua igual, lançando a exceção
+        repository.findByEmail(user.getEmail()).ifPresent(u -> {
+            throw new AlreadyExistsException("Usuário com email _" + user.getEmail() + "_ já existe!");
+        });
 
         return repository.save(user);
     }
@@ -28,28 +33,37 @@ public class UserService {
         return (ArrayList<Users>) repository.findAll();
     }
 
-    public Optional<Users> findUserById(long id) {
-        return repository.findById(id);
-    }
-
-    public Optional<Users> updateUser(long id, Users users) {
+    // MUDANÇA: Não retorna mais Optional<Users>
+    public Users findUserById(long id) {
+        // Encontra ou lança a exceção 404
         return repository.findById(id)
-                .map(userFound -> {
-                    userFound.setNome(users.getNome());
-                    userFound.setEmail(users.getEmail());
-                    userFound.setSenha(users.getSenha());
-                    return repository.save(userFound);
-                });
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário com ID: " + id + " não encontrado!"));
     }
 
-    public Optional<Users> deleteUser(long id) {
-        Optional<Users> userToDelete = repository.findById(id);
+    // MUDANÇA: Recebe o ID, acha o usuário (ou falha), atualiza e salva
+    public Users updateUserById(long id, Users userDetails) {
+        // Reutiliza o findUserById. Se não achar, ele já lança a exceção
+        Users userFound = findUserById(id);
 
-        if (userToDelete.isPresent()) {
-            repository.delete(userToDelete.get());
-        }
+        userFound.setNome(userDetails.getNome());
+        userFound.setEmail(userDetails.getEmail());
+        userFound.setSenha(userDetails.getSenha());
 
-        return userToDelete;
+        // Verifica se o novo email já não pertence a OUTRO usuário
+        repository.findByEmail(userDetails.getEmail()).ifPresent(u -> {
+            if (!Objects.equals(u.getId(), userFound.getId())) {
+                throw new AlreadyExistsException("Email _" + userDetails.getEmail() + "_ já está em uso por outro usuário!");
+            }
+        });
+
+        return repository.save(userFound);
+    }
+
+    // MUDANÇA: Apenas deleta. Se não achar, o findUserById já lança a exceção
+    public void deleteUserById(long id) {
+        // Se não encontrar, o findUserById vai lançar ResourceNotFoundException
+        Users userToDelete = findUserById(id);
+        repository.delete(userToDelete);
     }
 
 }

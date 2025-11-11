@@ -1,31 +1,54 @@
+// Em: /controllers/ProductController.java
 package pharmacymarketplace.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pharmacymarketplace.model.Product;
 import pharmacymarketplace.services.ProductService;
+
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
 
-    @Autowired
-    ProductService service;
+    private final ProductService service;
 
-    @PostMapping
-    public ResponseEntity<Product> addProduct(@RequestBody Product product) {
-        try {
-            Product createdProduct = service.addProduct(product);
-            return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
-        } catch (Exception e) {
-            System.err.println("Erro ao adicionar produto: " + e.getMessage());
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    public ProductController(ProductService service) {
+        this.service = service;
     }
 
+    @PostMapping
+    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+        Product newProduct = service.createProduct(product);
+        return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<ArrayList<Product>> getAllProduct() {
+        ArrayList<Product> products = service.listAllProducts();
+        if (products.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getProductById(@PathVariable long id) {
+        Product product = service.findProductById(id);
+        return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> putProductById(@PathVariable long id, @RequestBody Product product) {
+        Product productUpdated = service.updateProductById(id, product);
+        return new ResponseEntity<>(productUpdated, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProductById(@PathVariable long id) {
+        service.deleteProductById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

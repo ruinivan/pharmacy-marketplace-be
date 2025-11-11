@@ -6,14 +6,13 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "product_variants")
 @Getter
 @Setter
 @ToString
-public class ProductVariants {
+public class ProductVariant {
 
     @Id // Marca como a Chave Primária (ID)
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Diz ao banco para gerar o ID automaticamente
