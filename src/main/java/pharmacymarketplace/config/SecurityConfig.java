@@ -1,4 +1,4 @@
-package pharmacymarketplace.user.config;
+package pharmacymarketplace.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

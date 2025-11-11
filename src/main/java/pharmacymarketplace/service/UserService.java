@@ -1,9 +1,9 @@
-package pharmacymarketplace.user.service;
+package pharmacymarketplace.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pharmacymarketplace.user.model.Users;
-import pharmacymarketplace.user.repository.UserRepository;
+import pharmacymarketplace.model.Users;
+import pharmacymarketplace.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;

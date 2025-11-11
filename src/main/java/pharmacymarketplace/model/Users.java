@@ -1,13 +1,15 @@
-package pharmacymarketplace.user.model;
+package pharmacymarketplace.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity // Diz ao Spring que esta classe é uma tabela no banco de dados
-@Data   // Mágica do Lombok: cria getters, setters, toString, etc. automaticamente
+@Table(name = "users")
+@Getter
+@Setter
+@ToString
 public class Users {
 
     @Id // Marca como a Chave Primária (ID)

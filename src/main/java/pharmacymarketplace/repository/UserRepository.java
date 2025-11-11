@@ -1,7 +1,7 @@
-package pharmacymarketplace.user.repository;
+package pharmacymarketplace.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pharmacymarketplace.user.model.Users;
+import pharmacymarketplace.model.Users;
 
 // Nós estendemos JpaRepository<TipoDaEntidade, TipoDoId>
 public interface UserRepository extends JpaRepository<Users, Long> {

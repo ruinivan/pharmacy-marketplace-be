@@ -1,8 +1,8 @@
-package pharmacymarketplace.user.controller;
+package pharmacymarketplace.controller;
 
 import org.springframework.web.bind.annotation.*;
-import pharmacymarketplace.user.model.Users;
-import pharmacymarketplace.user.service.UserService; // Importe o Service
+import pharmacymarketplace.model.Users;
+import pharmacymarketplace.service.UserService; // Importe o Service
 
 import org.springframework.beans.factory.annotation.Autowired;
 
