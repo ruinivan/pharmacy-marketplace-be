@@ -1,4 +1,4 @@
-package pharmacymarketplace.model;
+package pharmacymarketplace.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,13 +10,13 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Users {
-
-    @Id // Marca como a Chave Primária (ID)
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Diz ao banco para gerar o ID automaticamente
-    private Long id;
-
+public class Users extends Base {
+    @Column(nullable = false)
     private String nome;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
     private String senha; // Apenas para exemplo, em um app real, isso deve ser criptografado!
 }

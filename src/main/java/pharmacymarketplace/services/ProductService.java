@@ -3,8 +3,8 @@ package pharmacymarketplace.services;
 
 import org.springframework.stereotype.Service;
 import pharmacymarketplace.exceptions.AlreadyExistsException;
-import pharmacymarketplace.model.Product;
-import pharmacymarketplace.repository.ProductRepository;
+import pharmacymarketplace.models.Product;
+import pharmacymarketplace.repositories.ProductRepository;
 import pharmacymarketplace.exceptions.ResourceNotFoundException; // Importe
 
 import java.util.ArrayList;

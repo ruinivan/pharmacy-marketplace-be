@@ -4,7 +4,7 @@ package pharmacymarketplace.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pharmacymarketplace.model.Users;
+import pharmacymarketplace.models.Users;
 import pharmacymarketplace.services.UserService;
 
 import java.util.ArrayList;

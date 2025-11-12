@@ -1,7 +1,7 @@
-package pharmacymarketplace.repository;
+package pharmacymarketplace.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pharmacymarketplace.model.Users;
+import pharmacymarketplace.models.Users;
 
 import java.util.Optional;
 

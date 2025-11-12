@@ -1,4 +1,4 @@
-package pharmacymarketplace.model;
+package pharmacymarketplace.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,11 +10,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Manufacturer {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Manufacturer extends Pharmacy {
+    @Column(nullable = false, unique = true)
     private String name;
 }

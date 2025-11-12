@@ -1,4 +1,4 @@
-package pharmacymarketplace.model;
+package pharmacymarketplace.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -7,24 +7,23 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "product_variants")
 @Getter
 @Setter
 @ToString
-public class ProductVariant {
+@MappedSuperclass
+public class Base {
 
     @Id // Marca como a Chave Primária (ID)
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Diz ao banco para gerar o ID automaticamente
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id") // Define o nome da coluna de Chave Estrangeira no BD
-    private Product product;
+    // Datas modernas
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 
-    private String sku;
-    private String dosage;
-    private String packageSize;
-    private String gtin;
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
+
+    @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 }
