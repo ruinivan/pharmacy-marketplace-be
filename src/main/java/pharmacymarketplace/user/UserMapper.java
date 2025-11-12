@@ -4,7 +4,7 @@ package pharmacymarketplace.user;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
-import pharmacymarketplace.auth.dto.CreateUserRequest;
+import pharmacymarketplace.auth.dtos.CreateUserRequest;
 import pharmacymarketplace.user.domains.jpa.Role;
 import pharmacymarketplace.user.domains.jpa.User;
 import pharmacymarketplace.user.dtos.UserDto;
