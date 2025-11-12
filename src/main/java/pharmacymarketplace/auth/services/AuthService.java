@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pharmacymarketplace.auth.JwtService;
 import pharmacymarketplace.auth.dtos.AuthRequest;
 import pharmacymarketplace.auth.dtos.AuthResponse;
 import pharmacymarketplace.auth.dtos.CreateUserRequest;
@@ -18,6 +19,8 @@ import pharmacymarketplace.user.domain.jpa.Customer;
 import pharmacymarketplace.user.domain.jpa.Role;
 import pharmacymarketplace.user.domain.jpa.User;
 import pharmacymarketplace.user.enums.CustomerTypeEnum;
+import pharmacymarketplace.user.repository.jpa.CustomerRepository;
+import pharmacymarketplace.user.repository.jpa.RoleRepository;
 import pharmacymarketplace.user.repository.jpa.UserRepository;
 
 import java.util.Set;

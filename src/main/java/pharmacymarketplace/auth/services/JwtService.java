@@ -1,8 +1,7 @@
-package pharmacymarketplace.auth.services;
+package pharmacymarketplace.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.security.Key;
+import javax.crypto.SecretKey; // Importação correta
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,14 +42,14 @@ public class JwtService {
         // Adiciona as roles (autoridades) como uma claim customizada
         extraClaims.put("roles", userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList())); // [43, 44]
+                .collect(Collectors.toList())); // [3, 4]
 
         return Jwts.builder()
-                .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256) // [45]
+                .claims(extraClaims) // Método moderno
+                .subject(userDetails.getUsername())
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + expirationTime))
+                .signWith(getSignInKey()) // Método moderno [5]
                 .compact();
     }
 
@@ -68,15 +67,16 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder() // [42, 46]
-                .setSigningKey(getSignInKey())
+        return Jwts.parser() // Método moderno [6]
+                .verifyWith(getSignInKey())
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .parseSignedClaims(token) // [7]
+                .getPayload();
     }
 
-    private Key getSignInKey() {
-        byte keyBytes = Decoders.BASE64.decode(secretKey);
+    private SecretKey getSignInKey() {
+        // CORREÇÃO: Deve ser byte (array de bytes), não byte
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }

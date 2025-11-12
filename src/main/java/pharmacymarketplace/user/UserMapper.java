@@ -1,4 +1,3 @@
-// Em: pharmacymarketplace/user/UserMapper.java
 package pharmacymarketplace.user;
 
 import org.mapstruct.Mapper;
@@ -12,24 +11,28 @@ import pharmacymarketplace.user.dtos.UserDto;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring") // Gera um Bean Spring [61]
+@Mapper(componentModel = "spring") // [20, 21]
 public interface UserMapper {
 
-    // Mapeamento customizado para converter Set<Role> em Set<String>
     @Mappings({
             @Mapping(target = "roles", expression = "java(mapRoles(user.getRoles()))"),
-            @Mapping(target = "fullName", source = "customer.fullName") // Exemplo de nested mapping
+            @Mapping(target = "fullName", source = "customer.fullName")
     })
-    UserDto toDto(User user); // [61, 65]
+    UserDto toDto(User user); // [22]
 
-    // Ignora campos que não devem ser mapeados (ex: senha)
-    @Mapping(target = "hashedPassword", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "publicId", ignore = true)
-    //... outros campos de BaseEntity
+    @Mapping(target = "hashedPassword", ignore = true)
+    @Mapping(target = "active", ignore = true)
+    @Mapping(target = "roles", ignore = true)
+    @Mapping(target = "customer", ignore = true)
+    @Mapping(target = "pharmacyStaff", ignore = true)
+    @Mapping(target = "deliveryPersonnel", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "deletedAt", ignore = true)
     User toEntity(CreateUserRequest request);
 
-    // Método helper default usado na 'expression' acima
     default Set<String> mapRoles(Set<Role> roles) {
         if (roles == null) {
             return java.util.Collections.emptySet();

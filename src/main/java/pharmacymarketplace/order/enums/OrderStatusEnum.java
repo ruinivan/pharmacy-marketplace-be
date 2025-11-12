@@ -1,4 +1,4 @@
-package pharmacymarketplace.user.enums;
+package pharmacymarketplace.order.enums;
 
 public enum OrderStatusEnum {
     PENDING,

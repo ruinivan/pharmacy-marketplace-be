@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import pharmacymarketplace.domain.jpa.base.AuditableEntity;
+import pharmacymarketplace.order.enums.OrderStatusEnum;
 import pharmacymarketplace.pharmacy.domain.jpa.Pharmacy;
 import pharmacymarketplace.user.domain.jpa.Customer;
 
@@ -34,7 +35,7 @@ public class Order extends AuditableEntity { // Pedidos são auditáveis, mas n�
 
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status", nullable = false)
-    private OrderStatus orderStatus; // Enum
+    private OrderStatusEnum orderStatus; // Enum
 
     //... campos de valores (subtotal, discount, shipping, total)...
 
