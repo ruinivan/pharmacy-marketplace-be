@@ -3,7 +3,7 @@ package pharmacymarketplace.delivery.domain.jpa;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import pharmacymarketplace.user.domains.jpa.User;
+import pharmacymarketplace.user.domain.jpa.User;
 
 // pharmacymarketplace/delivery/domain/jpa/DeliveryPersonnel.java
 @Entity

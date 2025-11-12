@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import pharmacymarketplace.domain.jpa.base.AuditableEntity;
 import pharmacymarketplace.pharmacy.domain.jpa.Pharmacy;
-import pharmacymarketplace.user.domains.jpa.Customer;
+import pharmacymarketplace.user.domain.jpa.Customer;
 
 import java.util.HashSet;
 import java.util.Set;

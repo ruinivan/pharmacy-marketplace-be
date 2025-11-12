@@ -8,8 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pharmacymarketplace.user.domains.jpa.User;
-import pharmacymarketplace.user.repositories.jpa.UserRepository;
+import pharmacymarketplace.user.domain.jpa.User;
+import pharmacymarketplace.user.repository.jpa.UserRepository;
 
 import java.util.Set;
 import java.util.stream.Collectors;

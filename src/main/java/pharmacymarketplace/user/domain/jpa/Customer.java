@@ -1,5 +1,5 @@
 // pharmacymarketplace/user/domain/jpa/Customer.java
-package pharmacymarketplace.user.domains.jpa;
+package pharmacymarketplace.user.domain.jpa;
 
 import jakarta.persistence.*;
 import lombok.Getter;

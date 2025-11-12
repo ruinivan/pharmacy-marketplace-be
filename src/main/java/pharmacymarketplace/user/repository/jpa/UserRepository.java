@@ -1,8 +1,8 @@
 //...user/repository/jpa/UserRepository.java
-package pharmacymarketplace.user.repositories.jpa;
+package pharmacymarketplace.user.repository.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pharmacymarketplace.user.domains.jpa.User;
+import pharmacymarketplace.user.domain.jpa.User;
 import java.util.Optional;
 import java.util.UUID;
 

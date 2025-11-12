@@ -1,4 +1,4 @@
-package pharmacymarketplace.user.domains.jpa;
+package pharmacymarketplace.user.domain.jpa;
 
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;

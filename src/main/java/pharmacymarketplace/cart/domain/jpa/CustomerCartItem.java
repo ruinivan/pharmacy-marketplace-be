@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import pharmacymarketplace.product.domain.jpa.ProductVariant;
-import pharmacymarketplace.user.domains.jpa.Customer;
+import pharmacymarketplace.user.domain.jpa.Customer;
 
 import java.time.Instant;
 

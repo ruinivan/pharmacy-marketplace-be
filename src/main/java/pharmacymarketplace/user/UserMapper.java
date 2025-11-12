@@ -5,8 +5,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import pharmacymarketplace.auth.dtos.CreateUserRequest;
-import pharmacymarketplace.user.domains.jpa.Role;
-import pharmacymarketplace.user.domains.jpa.User;
+import pharmacymarketplace.user.domain.jpa.Role;
+import pharmacymarketplace.user.domain.jpa.User;
 import pharmacymarketplace.user.dtos.UserDto;
 
 import java.util.Set;
