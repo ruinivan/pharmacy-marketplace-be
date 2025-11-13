@@ -4,6 +4,7 @@ package pharmacymarketplace.user.domain.jpa;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import pharmacymarketplace.domain.jpa.BaseEntity;
 import pharmacymarketplace.user.enums.CustomerTypeEnum;
 
 import java.time.LocalDate;
@@ -11,11 +12,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "customers")
 @Getter @Setter
-public class Customer {
-
-    @Id
-    @Column(name = "user_id")
-    private Long id;
+public class Customer extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId // Esta é a chave! Liga o ID desta entidade ao ID do 'User'

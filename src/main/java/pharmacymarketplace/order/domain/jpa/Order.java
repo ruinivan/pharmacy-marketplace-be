@@ -3,7 +3,7 @@ package pharmacymarketplace.order.domain.jpa;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import pharmacymarketplace.domain.jpa.base.AuditableEntity;
+import pharmacymarketplace.domain.jpa.AuditableEntity;
 import pharmacymarketplace.order.enums.OrderStatusEnum;
 import pharmacymarketplace.pharmacy.domain.jpa.Pharmacy;
 import pharmacymarketplace.user.domain.jpa.Customer;

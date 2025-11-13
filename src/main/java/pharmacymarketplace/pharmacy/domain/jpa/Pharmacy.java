@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import pharmacymarketplace.domain.jpa.base.SoftDeletableEntity;
+import pharmacymarketplace.domain.jpa.SoftDeletableEntity;
 
 // pharmacymarketplace/pharmacy/domain/jpa/Pharmacy.java
 @Entity

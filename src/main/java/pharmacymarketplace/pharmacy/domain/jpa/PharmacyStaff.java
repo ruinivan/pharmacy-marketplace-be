@@ -12,22 +12,21 @@ import pharmacymarketplace.user.domain.jpa.User;
 @Setter
 public class PharmacyStaff {
 
-    @Id
-    @Column(name = "user_id")
-    private Long id;
+    @EmbeddedId
+    private PharmacyStaffId id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
+    @MapsId("userId")
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("pharmacyId")
     @JoinColumn(name = "pharmacy_id", nullable = false)
     private Pharmacy pharmacy;
 
     @Column(nullable = false)
     private String position;
 
-    //... relacionamentos (prescriptions_validated)...
 }
 

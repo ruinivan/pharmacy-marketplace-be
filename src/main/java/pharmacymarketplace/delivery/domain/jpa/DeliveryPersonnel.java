@@ -27,5 +27,5 @@ public class DeliveryPersonnel {
     @Column(columnDefinition = "TEXT")
     private String vehicleDetails;
 
-    //... relacionamentos (deliveries)...
+
 }

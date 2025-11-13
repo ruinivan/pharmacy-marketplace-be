@@ -1,4 +1,4 @@
-package pharmacymarketplace.auth;
+package pharmacymarketplace.auth.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

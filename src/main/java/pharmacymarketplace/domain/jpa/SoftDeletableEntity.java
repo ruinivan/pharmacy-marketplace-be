@@ -1,4 +1,4 @@
-package pharmacymarketplace.domain.jpa.base;
+package pharmacymarketplace.domain.jpa;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;

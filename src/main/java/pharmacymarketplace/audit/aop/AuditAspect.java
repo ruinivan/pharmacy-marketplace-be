@@ -10,7 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import pharmacymarketplace.audit.domain.mongo.AuditLogDocument;
 import pharmacymarketplace.audit.repository.mongo.AuditLogMongoRepository;
-import pharmacymarketplace.domain.jpa.base.BaseEntity;
+import pharmacymarketplace.domain.jpa.BaseEntity;
 
 @Aspect
 @Component

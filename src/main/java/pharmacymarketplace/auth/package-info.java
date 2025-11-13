@@ -1,4 +1,4 @@
-@org.springframework.modulith.model.ApplicationModule(
-        allowedDependencies = {"domain", "user", "exceptions"} // Auth depende de 'user' e 'exceptions'
+@org.springframework.modulith.ApplicationModule(
+        allowedDependencies = {"domain", "user", "user::jpa", "user::enums", "exceptions"}
 )
 package pharmacymarketplace.auth;

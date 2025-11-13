@@ -9,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails; // Importação crucial
 import pharmacymarketplace.delivery.domain.jpa.DeliveryPersonnel;
-import pharmacymarketplace.domain.jpa.base.SoftDeletableEntity;
+import pharmacymarketplace.domain.jpa.SoftDeletableEntity;
 import pharmacymarketplace.pharmacy.domain.jpa.PharmacyStaff;
 
 import java.util.Collection;

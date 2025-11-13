@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import pharmacymarketplace.domain.jpa.base.BaseEntity;
+import pharmacymarketplace.domain.jpa.BaseEntity;
 
 // pharmacymarketplace/product/domain/jpa/Brand.java
 @Entity

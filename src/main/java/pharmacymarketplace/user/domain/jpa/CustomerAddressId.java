@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import pharmacymarketplace.user.enums.AddressTypeEnum;
 
 import java.io.Serializable;
 
@@ -13,11 +14,14 @@ import java.io.Serializable;
 @Setter
 @EqualsAndHashCode
 public class CustomerAddressId implements Serializable {
+
     @Column(name = "customer_id")
     private Long customerId;
+
     @Column(name = "address_id")
     private Long addressId;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "address_type")
-    private AddressType addressType; // Enum
+    private AddressTypeEnum addressType; // Enum
 }

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import pharmacymarketplace.domain.jpa.base.SoftDeletableEntity;
+import pharmacymarketplace.domain.jpa.SoftDeletableEntity;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -41,7 +41,8 @@ public class Product extends SoftDeletableEntity {
     @Column(name = "is_prescription_required", nullable = false)
     private boolean isPrescriptionRequired = false;
 
-    //... outros campos...
+    @Column(name = "controlled_substance_list", nullable = false)
+    private String controlledSubstanceList;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id")

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import pharmacymarketplace.domain.jpa.base.SoftDeletableEntity;
+import pharmacymarketplace.domain.jpa.SoftDeletableEntity;
 
 // pharmacymarketplace/product/domain/jpa/ProductVariant.java
 @Entity
@@ -23,7 +23,10 @@ public class ProductVariant extends SoftDeletableEntity {
     @Column(nullable = false, unique = true)
     private String sku;
 
+    @Column(nullable = false)
     private String dosage;
+
+    @Column(nullable = false)
     private String packageSize;
 
     @Column(unique = true)
