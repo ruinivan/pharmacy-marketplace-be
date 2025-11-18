@@ -11,14 +11,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
     private final UserRepository repository;
+
+    public UserService(PasswordEncoder passwordEncoder, UserRepository repository) {
+        this.passwordEncoder = passwordEncoder;
+        this.repository = repository;
+    }
 
     public User createUser(User user){
         repository.findByEmail(user.getEmail()).ifPresent((userEmailFound) -> {
@@ -38,6 +43,14 @@ public class UserService {
 
     public User findUserById(Long id){
         Optional<User> user = repository.findById(id);
+        if(user.isEmpty()){
+            throw new ResourceNotFoundException("User not found!");
+        }
+        return user.get();
+    }
+
+    public User findUserByPublicId(UUID publicId){
+        Optional<User> user = repository.findByPublicId(publicId);
         if(user.isEmpty()){
             throw new ResourceNotFoundException("User not found!");
         }

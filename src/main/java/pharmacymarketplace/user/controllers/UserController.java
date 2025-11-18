@@ -8,6 +8,7 @@ import pharmacymarketplace.user.domain.jpa.User;
 import pharmacymarketplace.user.services.UserService;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
@@ -28,15 +29,18 @@ public class UserController {
     @GetMapping
     public ResponseEntity<ArrayList<User>> getAllUser() {
         ArrayList<User> users = service.findAllUser();
-        if (users.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable long id) {
         User user = service.findUserById(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping("/public/{id}")
+    public ResponseEntity<User> getUserByPublicId(@PathVariable UUID publicId) {
+        User user = service.findUserByPublicId(publicId);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 

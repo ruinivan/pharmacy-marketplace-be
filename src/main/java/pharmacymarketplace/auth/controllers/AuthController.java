@@ -15,7 +15,7 @@ import pharmacymarketplace.auth.services.AuthService;
 
 //...auth/AuthController.java
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
