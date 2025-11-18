@@ -12,7 +12,7 @@ import java.util.UUID;
 
 //...product/web/ProductController.java
 @RestController
-@RequestMapping("/api/v1/products")
+@RequestMapping("/api/products")
 @RequiredArgsConstructor
 public class ProductController {
 
