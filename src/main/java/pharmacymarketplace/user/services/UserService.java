@@ -38,7 +38,7 @@ public class UserService {
 
     public User findUserById(Long id){
         Optional<User> user = repository.findById(id);
-        if(!user.isPresent()){
+        if(user.isEmpty()){
             throw new ResourceNotFoundException("User not found!");
         }
         return user.get();
