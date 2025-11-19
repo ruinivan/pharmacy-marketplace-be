@@ -58,21 +58,15 @@ public class UserService {
     }
 
     public User updateUserById(Long id, User user){
-        Optional<User> userFound = repository.findById(id);
-        if(userFound.isEmpty()){
-            throw new ResourceNotFoundException("User not found!");
-        }
-        String hashedPassword = userFound.get().getHashedPassword();
+        User userFound = this.findUserById(id);
+        String hashedPassword = userFound.getHashedPassword();
         user.setHashedPassword(hashedPassword);
         return repository.save(user);
     }
 
     public User deleteUserById(Long id){
-        Optional<User> userFound = repository.findById(id);
-        if(userFound.isEmpty()){
-            throw new ResourceNotFoundException("User not found!");
-        }
+        User userFound = this.findUserById(id);
         repository.deleteById(id);
-        return userFound.get();
+        return userFound;
     }
 }
