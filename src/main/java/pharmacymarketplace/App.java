@@ -22,7 +22,7 @@ import org.springframework.boot.autoconfigure.mongo.MongoReactiveAutoConfigurati
         MongoReactiveAutoConfiguration.class
 })
 public class App {
-    public static void main(String args) {
+    public static void main(String[] args) {
         SpringApplication.run(App.class, args);
     }
 }
