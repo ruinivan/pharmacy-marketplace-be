@@ -1,9 +1,6 @@
 package pharmacymarketplace.pharmacy.domain.jpa;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Index;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
@@ -33,5 +30,13 @@ public class Pharmacy extends SoftDeletableEntity { // Estende SoftDeletableEnti
 
     private String email;
 
+    @Column(name = "website")
+    private String website;
+
+    @OneToMany(mappedBy = "pharmacy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private java.util.Set<pharmacymarketplace.pharmacy.domain.jpa.PharmacyAddress> addresses = new java.util.HashSet<>();
+
+    @OneToMany(mappedBy = "pharmacy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private java.util.Set<pharmacymarketplace.pharmacy.domain.jpa.PharmacyStaff> staff = new java.util.HashSet<>();
 }
 

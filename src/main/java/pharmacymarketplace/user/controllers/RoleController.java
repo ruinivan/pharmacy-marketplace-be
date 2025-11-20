@@ -32,6 +32,19 @@ public class RoleController {
 
     @PostMapping
     public ResponseEntity<Role> createRole(@RequestBody Role role){
-        Role role = service.
+        Role newRole = service.createRole(role);
+        return new ResponseEntity<>(newRole, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Role> updateRole(@PathVariable Long id, @RequestBody Role role){
+        Role updatedRole = service.updateRole(id, role);
+        return new ResponseEntity<>(updatedRole, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteRole(@PathVariable Long id){
+        service.deleteRole(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

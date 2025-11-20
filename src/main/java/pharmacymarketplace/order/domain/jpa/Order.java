@@ -35,16 +35,29 @@ public class Order extends AuditableEntity { // Pedidos são auditáveis, mas n�
 
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status", nullable = false)
-    private OrderStatusEnum orderStatus; // Enum
+    private OrderStatusEnum orderStatus;
 
-    //... campos de valores (subtotal, discount, shipping, total)...
+    @Column(name = "subtotal", nullable = false, precision = 10, scale = 2)
+    private java.math.BigDecimal subtotal;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @Column(name = "discount_amount", precision = 10, scale = 2)
+    private java.math.BigDecimal discountAmount = java.math.BigDecimal.ZERO;
+
+    @Column(name = "shipping_cost", precision = 10, scale = 2)
+    private java.math.BigDecimal shippingCost = java.math.BigDecimal.ZERO;
+
+    @Column(name = "total", nullable = false, precision = 10, scale = 2)
+    private java.math.BigDecimal total;
+
+    @Column(name = "notes", columnDefinition = "TEXT")
+    private String notes;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrderItem> items = new HashSet<>();
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Payment> payments = new HashSet<>();
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Prescription prescription;
 }

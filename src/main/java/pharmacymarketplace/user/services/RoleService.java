@@ -36,4 +36,18 @@ public class RoleService {
         }
         return repository.save(role);
     }
+
+    public Role updateRole(Long id, Role role){
+        Role existingRole = findRoleById(id);
+        if(!existingRole.getName().equals(role.getName()) && repository.findByName(role.getName()).isPresent()){
+            throw new AlreadyExistsException("Role name already exists");
+        }
+        existingRole.setName(role.getName());
+        return repository.save(existingRole);
+    }
+
+    public void deleteRole(Long id){
+        Role role = findRoleById(id);
+        repository.delete(role);
+    }
 }

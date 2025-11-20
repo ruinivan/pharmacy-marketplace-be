@@ -4,10 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import pharmacymarketplace.domain.jpa.BaseEntity;
-import pharmacymarketplace.pharmacy.domain.jpa.Pharmacy;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "promotion_rules")
@@ -19,4 +15,25 @@ public class PromotionRule extends BaseEntity {
     @JoinColumn(name = "promotion_id", nullable = false)
     private Promotion promotion;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "rule_type", nullable = false)
+    private RuleType ruleType;
+
+    @Column(name = "rule_value", columnDefinition = "TEXT")
+    private String ruleValue;
+
+    @Column(name = "min_purchase_amount", precision = 10, scale = 2)
+    private java.math.BigDecimal minPurchaseAmount;
+
+    @Column(name = "min_quantity")
+    private Integer minQuantity;
+
+    public enum RuleType {
+        MIN_PURCHASE_AMOUNT,
+        MIN_QUANTITY,
+        PRODUCT_CATEGORY,
+        PRODUCT_BRAND,
+        CUSTOMER_TYPE,
+        FIRST_PURCHASE
+    }
 }
