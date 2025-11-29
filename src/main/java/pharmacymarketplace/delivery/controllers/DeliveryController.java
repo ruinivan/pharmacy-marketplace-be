@@ -30,6 +30,12 @@ public class DeliveryController {
         return ResponseEntity.ok(deliveryService.findByTrackingCode(trackingCode));
     }
 
+    @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_DELIVERY_PERSONNEL')")
+    public ResponseEntity<List<DeliveryDto>> getAllDeliveries() {
+        return ResponseEntity.ok(deliveryService.findAll());
+    }
+
     @GetMapping("/status/{status}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_DELIVERY_PERSONNEL')")
     public ResponseEntity<List<DeliveryDto>> getDeliveriesByStatus(@PathVariable DeliveryStatus status) {

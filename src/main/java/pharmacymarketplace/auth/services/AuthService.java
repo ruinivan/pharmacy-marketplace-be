@@ -8,13 +8,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pharmacymarketplace.auth.services.JwtService;
 import pharmacymarketplace.auth.dtos.AuthRequest;
 import pharmacymarketplace.auth.dtos.AuthResponse;
 import pharmacymarketplace.auth.dtos.CreateUserRequest;
 import pharmacymarketplace.exceptions.AlreadyExistsException;
 import pharmacymarketplace.exceptions.ResourceNotFoundException;
-import pharmacymarketplace.user.UserMapper;
 import pharmacymarketplace.user.domain.jpa.Customer;
 import pharmacymarketplace.user.domain.jpa.Role;
 import pharmacymarketplace.user.domain.jpa.User;
@@ -37,7 +35,6 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final UserMapper userMapper;
 
     @Transactional
     public AuthResponse register(CreateUserRequest request) {

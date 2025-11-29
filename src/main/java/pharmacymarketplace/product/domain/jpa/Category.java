@@ -8,7 +8,6 @@ import pharmacymarketplace.domain.jpa.BaseEntity;
 import java.util.HashSet;
 import java.util.Set;
 
-// pharmacymarketplace/product/domain/jpa/Category.java
 @Entity
 @Table(name = "categories")
 @Getter

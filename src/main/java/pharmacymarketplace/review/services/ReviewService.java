@@ -27,7 +27,14 @@ public class ReviewService {
     public List<ReviewDto> findByReviewable(ReviewDocument.ReviewableType type, Long reviewableId) {
         List<ReviewDocument> reviews = reviewRepository.findByReviewableTypeAndReviewableId(type, reviewableId);
         return reviews.stream()
-                .map(reviewMapper::toDto)
+                .map(review -> {
+                    User reviewer = userRepository.findById(review.reviewerId())
+                            .orElse(null);
+                    String reviewerName = reviewer != null && reviewer.getCustomer() != null 
+                            ? reviewer.getCustomer().getFullName() 
+                            : "Usuário Anônimo";
+                    return reviewMapper.toDtoWithReviewerName(review, reviewerName);
+                })
                 .toList();
     }
 
@@ -48,7 +55,10 @@ public class ReviewService {
         );
 
         ReviewDocument saved = reviewRepository.save(review);
-        return reviewMapper.toDto(saved);
+        String reviewerName = user.getCustomer() != null 
+                ? user.getCustomer().getFullName() 
+                : "Usuário Anônimo";
+        return reviewMapper.toDtoWithReviewerName(saved, reviewerName);
     }
 
     public void deleteReview(String id) {

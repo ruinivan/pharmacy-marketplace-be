@@ -1,7 +1,5 @@
 package pharmacymarketplace.user.services;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import pharmacymarketplace.exceptions.AlreadyExistsException;
 import pharmacymarketplace.exceptions.ResourceNotFoundException;
@@ -9,7 +7,7 @@ import pharmacymarketplace.user.domain.jpa.User;
 import pharmacymarketplace.user.repository.jpa.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,7 +27,7 @@ public class UserService {
         repository.findByEmail(user.getEmail()).ifPresent((userEmailFound) -> {
             throw new AlreadyExistsException("O email " + userEmailFound.getEmail() + " já existe!");
         });
-        repository.findByPhone(user.getPhoneNumber()).ifPresent((userNumberFound) -> {
+        repository.findByPhoneNumber(user.getPhoneNumber()).ifPresent((userNumberFound) -> {
             throw new AlreadyExistsException("O telefone " + userNumberFound.getPhoneNumber() + " já existe!");
         });
         String hashedPassword = passwordEncoder.encode(user.getPassword());
@@ -37,8 +35,8 @@ public class UserService {
         return repository.save(user);
     }
 
-    public ArrayList<User> findAllUser(){
-        return new ArrayList<>(repository.findAll());
+    public List<User> findAllUser(){
+        return repository.findAll();
     }
 
     public User findUserById(Long id){
@@ -74,5 +72,13 @@ public class UserService {
         }
         repository.deleteById(id);
         return userFound.get();
+    }
+
+    public User findUserByEmail(String email){
+        Optional<User> user = repository.findByEmail(email);
+        if(user.isEmpty()){
+            throw new ResourceNotFoundException("User not found!");
+        }
+        return user.get();
     }
 }

@@ -10,6 +10,7 @@ import pharmacymarketplace.delivery.domain.jpa.DeliveryPersonnel;
 import pharmacymarketplace.delivery.dtos.DeliveryDto;
 import pharmacymarketplace.delivery.dtos.UpdateDeliveryRequest;
 import pharmacymarketplace.delivery.repository.jpa.DeliveryRepository;
+import pharmacymarketplace.delivery.repository.jpa.DeliveryPersonnelRepository;
 import pharmacymarketplace.exceptions.ResourceNotFoundException;
 import pharmacymarketplace.order.domain.jpa.Order;
 import pharmacymarketplace.order.repository.jpa.OrderRepository;
@@ -27,6 +28,7 @@ public class DeliveryService {
     private final DeliveryRepository deliveryRepository;
     private final OrderRepository orderRepository;
     private final AddressRepository addressRepository;
+    private final DeliveryPersonnelRepository deliveryPersonnelRepository;
     private final DeliveryMapper deliveryMapper;
 
     public DeliveryDto findByOrderId(Long orderId) {
@@ -39,6 +41,12 @@ public class DeliveryService {
         Delivery delivery = deliveryRepository.findByTrackingCode(trackingCode)
                 .orElseThrow(() -> new ResourceNotFoundException("Entrega não encontrada"));
         return deliveryMapper.toDto(delivery);
+    }
+
+    public List<DeliveryDto> findAll() {
+        return deliveryRepository.findAll().stream()
+                .map(deliveryMapper::toDto)
+                .toList();
     }
 
     public List<DeliveryDto> findByStatus(DeliveryStatus status) {
@@ -75,7 +83,9 @@ public class DeliveryService {
                 .orElseThrow(() -> new ResourceNotFoundException("Entrega não encontrada"));
 
         if (request.deliveryPersonnelId() != null) {
-            // TODO: Load DeliveryPersonnel
+            DeliveryPersonnel deliveryPersonnel = deliveryPersonnelRepository.findById(request.deliveryPersonnelId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Entregador não encontrado"));
+            delivery.setDeliveryPersonnel(deliveryPersonnel);
         }
 
         if (request.deliveryStatus() != null) {

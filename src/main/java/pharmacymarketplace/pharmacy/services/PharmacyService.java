@@ -36,6 +36,13 @@ public class PharmacyService {
                 .toList();
     }
 
+    public PharmacyDto findByEmail(String email) {
+        Pharmacy pharmacy = pharmacyRepository.findByEmail(email).stream()
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Farmácia não encontrada para o email: " + email));
+        return pharmacyMapper.toDto(pharmacy);
+    }
+
     @Transactional
     public PharmacyDto createPharmacy(CreatePharmacyRequest request) {
         if (pharmacyRepository.findByCnpj(request.cnpj()).isPresent()) {

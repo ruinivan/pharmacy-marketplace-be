@@ -6,6 +6,12 @@ import org.springframework.stereotype.Service;
 import pharmacymarketplace.exceptions.ResourceNotFoundException;
 import pharmacymarketplace.pharmacy.domain.jpa.Pharmacy;
 import pharmacymarketplace.pharmacy.repository.jpa.PharmacyRepository;
+import pharmacymarketplace.product.domain.jpa.Category;
+import pharmacymarketplace.product.domain.jpa.Product;
+import pharmacymarketplace.product.domain.jpa.ProductVariant;
+import pharmacymarketplace.product.repository.jpa.CategoryRepository;
+import pharmacymarketplace.product.repository.jpa.ProductRepository;
+import pharmacymarketplace.product.repository.jpa.ProductVariantRepository;
 import pharmacymarketplace.promotion.PromotionMapper;
 import pharmacymarketplace.promotion.domain.jpa.Promotion;
 import pharmacymarketplace.promotion.domain.jpa.PromotionRule;
@@ -26,6 +32,9 @@ public class PromotionService {
     private final PromotionRepository promotionRepository;
     private final PharmacyRepository pharmacyRepository;
     private final PromotionMapper promotionMapper;
+    private final ProductRepository productRepository;
+    private final ProductVariantRepository productVariantRepository;
+    private final CategoryRepository categoryRepository;
 
     public PromotionDto findById(Long id) {
         Promotion promotion = promotionRepository.findById(id)
@@ -87,7 +96,31 @@ public class PromotionService {
                 target.setPromotion(promotion);
                 target.setTargetType(targetRequest.targetType());
                 target.setTargetId(targetRequest.targetId());
-                // TODO: Set product, productVariant, category based on targetType
+                
+                // Set product, productVariant, category based on targetType
+                if (targetRequest.targetId() != null) {
+                    switch (targetRequest.targetType()) {
+                        case PRODUCT:
+                            Product product = productRepository.findById(targetRequest.targetId())
+                                    .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
+                            target.setProduct(product);
+                            break;
+                        case PRODUCT_VARIANT:
+                            ProductVariant variant = productVariantRepository.findById(targetRequest.targetId())
+                                    .orElseThrow(() -> new ResourceNotFoundException("Variante do produto não encontrada"));
+                            target.setProductVariant(variant);
+                            break;
+                        case CATEGORY:
+                            Category category = categoryRepository.findById(targetRequest.targetId())
+                                    .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada"));
+                            target.setCategory(category);
+                            break;
+                        case ALL_PRODUCTS:
+                        case BRAND:
+                            // Não precisa setar relacionamento específico
+                            break;
+                    }
+                }
                 targets.add(target);
             }
         }

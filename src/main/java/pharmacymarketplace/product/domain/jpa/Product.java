@@ -3,15 +3,14 @@ package pharmacymarketplace.product.domain.jpa;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import pharmacymarketplace.domain.jpa.SoftDeletableEntity;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-// pharmacymarketplace/product/domain/jpa/Product.java
 @Entity
 @Table(name = "products", indexes = {
         @Index(name = "idx_products_public_id", columnList = "public_id"),
@@ -20,7 +19,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @SQLDelete(sql = "UPDATE products SET deleted_at = CURRENT_TIMESTAMP WHERE id =?")
-@Where(clause = "deleted_at IS NULL")
+@Filter(name = "deletedFilter")
 public class Product extends SoftDeletableEntity {
 
     @Column(name = "public_id", columnDefinition = "BINARY(16)", nullable = false, unique = true)

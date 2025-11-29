@@ -1,0 +1,159 @@
+.delivery-list {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.filter-section {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-section label {
+  font-weight: bold;
+  color: #333;
+}
+
+.filter-section select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.no-deliveries {
+  padding: 40px;
+  text-align: center;
+  color: #666;
+  background: white;
+  border-radius: 8px;
+}
+
+.deliveries-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.delivery-card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.delivery-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.delivery-header h3 {
+  margin: 0;
+  color: #333;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.status-pending {
+  background: #ffc107;
+  color: #333;
+}
+
+.status-assigned {
+  background: #2196f3;
+  color: white;
+}
+
+.status-transit {
+  background: #9c27b0;
+  color: white;
+}
+
+.status-delivered {
+  background: #4caf50;
+  color: white;
+}
+
+.status-failed {
+  background: #f44336;
+  color: white;
+}
+
+.status-cancelled {
+  background: #6c757d;
+  color: white;
+}
+
+.delivery-info {
+  margin-bottom: 15px;
+}
+
+.delivery-info p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.delivery-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.delivery-update-form {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid #e9ecef;
+}
+
+.delivery-update-form h4 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.btn-success {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+}

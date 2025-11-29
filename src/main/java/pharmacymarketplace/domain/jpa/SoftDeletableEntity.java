@@ -4,11 +4,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.FilterDef;
 
 import java.time.Instant;
 
-//...domain/jpa/base/SoftDeletableEntity.java
 @MappedSuperclass
+@FilterDef(name = "deletedFilter", defaultCondition = "deleted_at IS NULL")
 @Getter
 @Setter
 public abstract class SoftDeletableEntity extends AuditableEntity {

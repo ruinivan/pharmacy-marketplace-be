@@ -3,11 +3,11 @@ package pharmacymarketplace.user.domain.jpa;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails; // Importação crucial
+import org.springframework.security.core.userdetails.UserDetails;
 import pharmacymarketplace.delivery.domain.jpa.DeliveryPersonnel;
 import pharmacymarketplace.domain.jpa.SoftDeletableEntity;
 import pharmacymarketplace.pharmacy.domain.jpa.PharmacyStaff;
@@ -25,9 +25,8 @@ import java.util.stream.Collectors;
 })
 @Getter
 @Setter
-@SQLDelete(sql = "UPDATE users SET deleted_at = CURRENT_TIMESTAMP WHERE id =?") // [3, 4]
-@Where(clause = "deleted_at IS NULL") // [3, 4, 5]
-// AQUI ESTÁ A CORREÇÃO PRINCIPAL:
+@SQLDelete(sql = "UPDATE users SET deleted_at = CURRENT_TIMESTAMP WHERE id =?")
+@Filter(name = "deletedFilter")
 public class User extends SoftDeletableEntity implements UserDetails {
 
     @Column(name = "public_id", columnDefinition = "BINARY(16)", nullable = false, unique = true) // [6, 7]
@@ -47,7 +46,7 @@ public class User extends SoftDeletableEntity implements UserDetails {
 
     // --- Relacionamentos ---
 
-    @ManyToMany(fetch = FetchType.EAGER) // EAGER é necessário para carregar as roles para o UserDetails [8]
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -70,7 +69,7 @@ public class User extends SoftDeletableEntity implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toList()); // [8, 9]
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -85,21 +84,21 @@ public class User extends SoftDeletableEntity implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true; // Você pode adicionar lógica para isso se necessário
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true; // Você pode adicionar lógica para isso se necessário
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true; // Você pode adicionar lógica para isso se necessário
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return this.isActive; // Usa a coluna is_active do seu banco
+        return this.isActive;
     }
 }

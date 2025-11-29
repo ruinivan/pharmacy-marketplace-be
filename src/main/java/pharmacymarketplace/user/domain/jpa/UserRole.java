@@ -12,7 +12,7 @@ import lombok.ToString;
 @ToString
 public class UserRole {
     @EmbeddedId
-    private CustomerAddressId id;
+    private UserRoleId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")

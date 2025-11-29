@@ -27,15 +27,18 @@ public class ProductService {
     private final ManufacturerRepository manufacturerRepository;
     private final ProductMapper productMapper;
 
+    @Transactional
     public Product findByPublicId(UUID publicId) {
         return productRepository.findByPublicId(publicId)
                 .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
     }
 
+    @Transactional
     public List<Product> findAll() {
         return productRepository.findAll();
     }
 
+    @Transactional
     public List<Product> searchByName(String name) {
         return productRepository.findByNameContainingIgnoreCase(name);
     }
@@ -101,7 +104,7 @@ public class ProductService {
         product.setDescription(request.description());
         product.setAnvisaCode(request.anvisaCode());
         product.setActivePrinciple(request.activePrinciple());
-        product.setIsPrescriptionRequired(request.isPrescriptionRequired());
+        product.setPrescriptionRequired(request.isPrescriptionRequired());
         product.setControlledSubstanceList(request.controlledSubstanceList());
 
         if (request.brandId() != null) {

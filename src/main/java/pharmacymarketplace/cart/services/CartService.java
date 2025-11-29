@@ -27,7 +27,7 @@ public class CartService {
     private final CartMapper cartMapper;
 
     public CartDto getCart(Long customerId) {
-        Customer customer = customerRepository.findById(customerId)
+        customerRepository.findById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
         List<CustomerCartItem> items = cartRepository.findByCustomerId(customerId);

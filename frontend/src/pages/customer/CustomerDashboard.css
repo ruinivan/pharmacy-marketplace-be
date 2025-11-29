@@ -1,0 +1,72 @@
+.customer-dashboard {
+  min-height: 100vh;
+}
+
+.dashboard-header {
+  background-color: #007bff;
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.user-email {
+  font-size: 12px;
+  opacity: 0.9;
+  font-weight: normal;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+}
+
+.dashboard-header nav {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.dashboard-header nav a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dashboard-header nav a:hover {
+  background-color: rgba(255,255,255,0.2);
+}
+
+.dashboard-header nav a.active {
+  background-color: rgba(255,255,255,0.3);
+  font-weight: 600;
+}
+
+.dashboard-header {
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.dashboard-header h1 {
+  font-size: 24px;
+}
+
+.dashboard-main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+

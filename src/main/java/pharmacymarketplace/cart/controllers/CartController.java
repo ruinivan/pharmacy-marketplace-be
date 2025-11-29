@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import pharmacymarketplace.cart.dtos.AddCartItemRequest;
 import pharmacymarketplace.cart.dtos.CartDto;
 import pharmacymarketplace.cart.services.CartService;
+import pharmacymarketplace.exceptions.ResourceNotFoundException;
 import pharmacymarketplace.user.domain.jpa.User;
 import pharmacymarketplace.user.repository.jpa.UserRepository;
 
@@ -26,7 +27,11 @@ public class CartController {
     public ResponseEntity<CartDto> getCart(Authentication authentication) {
         String email = authentication.getName();
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+        
+        if (user.getCustomer() == null) {
+            throw new ResourceNotFoundException("Cliente não encontrado para este usuário");
+        }
         
         Long customerId = user.getCustomer().getId();
         return ResponseEntity.ok(cartService.getCart(customerId));
@@ -39,7 +44,11 @@ public class CartController {
     ) {
         String email = authentication.getName();
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+        
+        if (user.getCustomer() == null) {
+            throw new ResourceNotFoundException("Cliente não encontrado para este usuário");
+        }
         
         Long customerId = user.getCustomer().getId();
         return ResponseEntity.status(HttpStatus.CREATED).body(cartService.addItem(customerId, request));
@@ -53,7 +62,11 @@ public class CartController {
     ) {
         String email = authentication.getName();
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+        
+        if (user.getCustomer() == null) {
+            throw new ResourceNotFoundException("Cliente não encontrado para este usuário");
+        }
         
         Long customerId = user.getCustomer().getId();
         return ResponseEntity.ok(cartService.updateItemQuantity(customerId, productVariantId, quantity));
@@ -66,7 +79,11 @@ public class CartController {
     ) {
         String email = authentication.getName();
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+        
+        if (user.getCustomer() == null) {
+            throw new ResourceNotFoundException("Cliente não encontrado para este usuário");
+        }
         
         Long customerId = user.getCustomer().getId();
         cartService.removeItem(customerId, productVariantId);
@@ -77,7 +94,11 @@ public class CartController {
     public ResponseEntity<Void> clearCart(Authentication authentication) {
         String email = authentication.getName();
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+        
+        if (user.getCustomer() == null) {
+            throw new ResourceNotFoundException("Cliente não encontrado para este usuário");
+        }
         
         Long customerId = user.getCustomer().getId();
         cartService.clearCart(customerId);

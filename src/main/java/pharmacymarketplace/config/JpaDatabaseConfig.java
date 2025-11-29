@@ -3,7 +3,7 @@ package pharmacymarketplace.config;
 import java.util.Properties;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,11 +24,27 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 )
 public class JpaDatabaseConfig {
 
+    @Value("${spring.datasource.mysql.url}")
+    private String jdbcUrl;
+
+    @Value("${spring.datasource.mysql.username}")
+    private String username;
+
+    @Value("${spring.datasource.mysql.password}")
+    private String password;
+
+    @Value("${spring.datasource.mysql.driver-class-name}")
+    private String driverClassName;
+
     @Primary
     @Bean(name = "mysqlDataSource")
-    @ConfigurationProperties(prefix = "spring.datasource.mysql")
     public DataSource mysqlDataSource() {
-        return DataSourceBuilder.create().build();
+        return DataSourceBuilder.create()
+                .url(jdbcUrl)
+                .username(username)
+                .password(password)
+                .driverClassName(driverClassName)
+                .build();
     }
 
     @Primary
@@ -45,9 +61,8 @@ public class JpaDatabaseConfig {
         em.setJpaVendorAdapter(vendorAdapter);
 
         Properties properties = new Properties();
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
-        properties.setProperty("hibernate.show_sql", "true");
+        properties.setProperty("hibernate.hbm2ddl.auto", "update");
+        properties.setProperty("hibernate.show_sql", "false");
         properties.setProperty("hibernate.format_sql", "true");
         em.setJpaProperties(properties);
 
@@ -58,6 +73,10 @@ public class JpaDatabaseConfig {
     @Bean(name = "mysqlTransactionManager")
     public PlatformTransactionManager mysqlTransactionManager(
             @Qualifier("mysqlEntityManagerFactory") LocalContainerEntityManagerFactoryBean emf) {
-        return new JpaTransactionManager(emf.getObject());
+        var entityManagerFactory = emf.getObject();
+        if (entityManagerFactory == null) {
+            throw new IllegalStateException("EntityManagerFactory não foi inicializado corretamente");
+        }
+        return new JpaTransactionManager(entityManagerFactory);
     }
 }

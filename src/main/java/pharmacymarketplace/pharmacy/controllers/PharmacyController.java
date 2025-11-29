@@ -29,6 +29,12 @@ public class PharmacyController {
         return ResponseEntity.ok(pharmacyService.findById(id));
     }
 
+    @GetMapping("/by-email/{email}")
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+    public ResponseEntity<PharmacyDto> getPharmacyByEmail(@PathVariable String email) {
+        return ResponseEntity.ok(pharmacyService.findByEmail(email));
+    }
+
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<PharmacyDto> createPharmacy(

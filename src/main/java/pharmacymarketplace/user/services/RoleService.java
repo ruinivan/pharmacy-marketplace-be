@@ -6,7 +6,7 @@ import pharmacymarketplace.exceptions.ResourceNotFoundException;
 import pharmacymarketplace.user.domain.jpa.Role;
 import pharmacymarketplace.user.repository.jpa.RoleRepository;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,8 +18,8 @@ public class RoleService {
         this.repository = repository;
     }
 
-    public ArrayList<Role> findAllRoles(){
-        return new ArrayList<>(repository.findAll());
+    public List<Role> findAllRoles(){
+        return repository.findAll();
     }
 
     public Role findRoleById(Long id){

@@ -1,10 +1,12 @@
 package pharmacymarketplace.exceptions;
 
-import lombok.NonNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.hibernate.LazyInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
@@ -21,7 +23,8 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    // Handler para 404 Not Found (Como o seu)
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
         ApiErrorResponse body = new ApiErrorResponse(
@@ -34,7 +37,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-    // Handler para 409 Conflict (Como o seu)
     @ExceptionHandler(AlreadyExistsException.class)
     public ResponseEntity<Object> handleAlreadyExistsException(AlreadyExistsException ex, WebRequest request) {
         ApiErrorResponse body = new ApiErrorResponse(
@@ -47,21 +49,31 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
-    // Handler para 401 Unauthorized (Falha de Autenticação/Login)
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<Object> handleAuthenticationException(AuthenticationException ex, WebRequest request) {
+        String message = ex.getMessage();
+        // Melhora a mensagem de erro para o usuário
+        if (message != null && message.contains("Bad credentials")) {
+            message = "Usuário inexistente ou senha inválida";
+        } else if (message != null && message.contains("UserDetailsService returned null")) {
+            message = "Usuário não encontrado";
+        } else if (message != null && message.contains("UsernameNotFoundException")) {
+            message = "Usuário não encontrado";
+        } else {
+            message = "Falha na autenticação: " + (message != null ? message : "Credenciais inválidas");
+        }
+        
         ApiErrorResponse body = new ApiErrorResponse(
                 new Date(),
                 HttpStatus.UNAUTHORIZED.value(),
                 "Unauthorized",
-                "Falha na autenticação: " + ex.getMessage(),
+                message,
                 request.getDescription(false).replace("uri=", "")
         );
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
 
-    // Handler para 403 Forbidden (Falha de Autorização - @PreAuthorize)
-    @ExceptionHandler(AccessDeniedException.class) // [90]
+    @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
         ApiErrorResponse body = new ApiErrorResponse(
                 new Date(),
@@ -73,13 +85,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.FORBIDDEN);
     }
 
-    // NOVO: Handler para 400 Bad Request (Falhas de Validação @Valid) [96, 97, 98]
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex,
-            @NonNull HttpHeaders headers,
-            @NonNull HttpStatusCode status,
-            @NonNull WebRequest request
+            HttpHeaders headers,
+            HttpStatusCode status,
+            WebRequest request
     ) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach(error -> {
@@ -99,7 +110,32 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-    // Handler genérico 500 (Como o seu)
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<Object> handleIllegalStateException(IllegalStateException ex, WebRequest request) {
+        ApiErrorResponse body = new ApiErrorResponse(
+                new Date(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Bad Request",
+                ex.getMessage(),
+                request.getDescription(false).replace("uri=", "")
+        );
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(LazyInitializationException.class)
+    public ResponseEntity<Object> handleLazyInitializationException(LazyInitializationException ex, WebRequest request) {
+        logger.error("LazyInitializationException: {}", ex.getMessage());
+        logger.error("Stack trace: ", ex);
+        ApiErrorResponse body = new ApiErrorResponse(
+                new Date(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Internal Server Error",
+                "Erro ao acessar dados relacionados. Por favor, tente novamente.",
+                request.getDescription(false).replace("uri=", "")
+        );
+        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGlobalException(Exception ex, WebRequest request) {
         ApiErrorResponse body = new ApiErrorResponse(
@@ -112,7 +148,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // --- Record DTOs para Respostas de Erro ---
     private record ApiErrorResponse(Date timestamp, int status, String error, String message, String path) {}
 
     private record ApiValidationErrorResponse(Date timestamp, int status, String error, String message, String path, Map<String, String> validationErrors) {}

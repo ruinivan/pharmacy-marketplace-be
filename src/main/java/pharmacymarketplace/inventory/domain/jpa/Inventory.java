@@ -13,7 +13,7 @@ import java.time.LocalDate;
 
 // pharmacymarketplace/inventory/domain/jpa/Inventory.java
 @Entity
-@Table(name = "inventory", indexes = @Index(name = "idx_inventory_product_variant_price", columnList = "product_variant_id, price"))
+@Table(name = "inventory")
 @Getter
 @Setter
 public class Inventory {
@@ -27,6 +27,7 @@ public class Inventory {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("productVariantId")
+    @JoinColumn(name = "productVariant_id", insertable = false, updatable = false)
     private ProductVariant productVariant;
 
     @Column(nullable = false)

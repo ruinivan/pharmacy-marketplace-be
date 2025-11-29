@@ -3,17 +3,16 @@ package pharmacymarketplace.product.domain.jpa;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import pharmacymarketplace.domain.jpa.SoftDeletableEntity;
 
-// pharmacymarketplace/product/domain/jpa/ProductVariant.java
 @Entity
 @Table(name = "product_variants", indexes = @Index(name = "idx_product_variants_deleted_at", columnList = "deleted_at"))
 @Getter
 @Setter
 @SQLDelete(sql = "UPDATE product_variants SET deleted_at = CURRENT_TIMESTAMP WHERE id =?")
-@Where(clause = "deleted_at IS NULL")
+@Filter(name = "deletedFilter")
 public class ProductVariant extends SoftDeletableEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,58 +1,67 @@
-// Em: /controllers/UserController.java
 package pharmacymarketplace.user.controllers;
 
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import pharmacymarketplace.user.UserMapper;
 import pharmacymarketplace.user.domain.jpa.User;
+import pharmacymarketplace.user.dtos.UserDto;
 import pharmacymarketplace.user.services.UserService;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService service;
-
-    public UserController(UserService service) {
-        this.service = service;
-    }
-
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User newUser = service.createUser(user);
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
-    }
+    private final UserMapper userMapper;
 
     @GetMapping
-    public ResponseEntity<ArrayList<User>> getAllUser() {
-        ArrayList<User> users = service.findAllUser();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        List<UserDto> users = service.findAllUser().stream()
+                .map(userMapper::toDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable long id) {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<UserDto> getUserById(@PathVariable long id) {
         User user = service.findUserById(id);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return ResponseEntity.ok(userMapper.toDto(user));
     }
 
     @GetMapping("/public/{id}")
-    public ResponseEntity<User> getUserByPublicId(@PathVariable UUID publicId) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<UserDto> getUserByPublicId(@PathVariable UUID publicId) {
         User user = service.findUserByPublicId(publicId);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return ResponseEntity.ok(userMapper.toDto(user));
+    }
+
+    @GetMapping("/email/{email}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email) {
+        User user = service.findUserByEmail(email);
+        return ResponseEntity.ok(userMapper.toDto(user));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> putUserById(@PathVariable long id, @RequestBody User user) {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<UserDto> updateUserById(@PathVariable long id, @RequestBody User user) {
         User userUpdated = service.updateUserById(id, user);
-        return new ResponseEntity<>(userUpdated, HttpStatus.OK);
+        return ResponseEntity.ok(userMapper.toDto(userUpdated));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<User> deleteUserById(@PathVariable long id) {
-        User userDeleted = service.deleteUserById(id);
-        return new ResponseEntity<>(userDeleted, HttpStatus.OK);
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Void> deleteUserById(@PathVariable long id) {
+        service.deleteUserById(id);
+        return ResponseEntity.noContent().build();
     }
 }

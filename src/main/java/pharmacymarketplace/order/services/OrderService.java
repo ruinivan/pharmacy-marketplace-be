@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import pharmacymarketplace.exceptions.ResourceNotFoundException;
 import pharmacymarketplace.inventory.domain.jpa.Inventory;
 import pharmacymarketplace.inventory.repository.jpa.InventoryRepository;
-import pharmacymarketplace.order.OrderMapper;
 import pharmacymarketplace.order.domain.jpa.*;
 import pharmacymarketplace.order.dtos.CreateOrderRequest;
 import pharmacymarketplace.order.enums.OrderStatusEnum;
@@ -34,7 +33,6 @@ public class OrderService {
     private final PharmacyRepository pharmacyRepository;
     private final ProductVariantRepository productVariantRepository;
     private final InventoryRepository inventoryRepository;
-    private final OrderMapper orderMapper;
 
     public Order findByPublicId(UUID publicId) {
         return orderRepository.findByPublicId(publicId)
@@ -47,6 +45,10 @@ public class OrderService {
 
     public List<Order> findByPharmacyId(Long pharmacyId) {
         return orderRepository.findByPharmacyId(pharmacyId);
+    }
+
+    public List<Order> findAll() {
+        return orderRepository.findAll();
     }
 
     @Transactional

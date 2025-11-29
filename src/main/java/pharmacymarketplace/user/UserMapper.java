@@ -11,14 +11,26 @@ import pharmacymarketplace.user.dtos.UserDto;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring") // [20, 21]
+@Mapper(componentModel = "spring", unmappedTargetPolicy = org.mapstruct.ReportingPolicy.IGNORE) // [20, 21]
 public interface UserMapper {
 
     @Mappings({
             @Mapping(target = "roles", expression = "java(mapRoles(user.getRoles()))"),
-            @Mapping(target = "fullName", source = "customer.fullName")
+            @Mapping(target = "fullName", expression = "java(getFullName(user))")
     })
     UserDto toDto(User user); // [22]
+    
+    default String getFullName(User user) {
+        try {
+            if (user.getCustomer() != null && user.getCustomer().getFullName() != null) {
+                return user.getCustomer().getFullName();
+            }
+        } catch (Exception e) {
+            // Customer não carregado (LAZY) ou null
+        }
+        // Fallback: retorna email se não houver nome completo
+        return user.getEmail() != null ? user.getEmail() : "Usuário";
+    }
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "publicId", ignore = true)

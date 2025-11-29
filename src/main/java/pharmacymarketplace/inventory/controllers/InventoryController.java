@@ -28,6 +28,17 @@ public class InventoryController {
         return ResponseEntity.ok(inventoryService.findByProductVariantId(productVariantId));
     }
 
+    @PostMapping("/pharmacy/{pharmacyId}/product-variant/{productVariantId}")
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+    public ResponseEntity<InventoryDto> createInventory(
+            @PathVariable Long pharmacyId,
+            @PathVariable Long productVariantId,
+            @Valid @RequestBody UpdateInventoryRequest request
+    ) {
+        return ResponseEntity.status(org.springframework.http.HttpStatus.CREATED)
+                .body(inventoryService.updateInventory(pharmacyId, productVariantId, request));
+    }
+
     @PutMapping("/pharmacy/{pharmacyId}/product-variant/{productVariantId}")
     @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public ResponseEntity<InventoryDto> updateInventory(
